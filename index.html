@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mamemono — From Mame to Mug</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Pantone coffee palette */
+  --latte:      #F3E9D7;
+  --cappuccino: #D6BFA6;
+  --caramel:    #B08968;
+  --mocha:      #7A553A;
+  --espresso:   #3B2A22;
+  --dark:       #1C130D;
+
+  /* Eye-catch accent — Terre Cuite orange-red */
+  --accent:     #A13A1E;
+  --accent-lt:  #C4502A;
+  --gold:       #B79858;
+  --gold-lt:    #F1C166;
+
+  --cream:      #FDFAF5;
+  --mist:       #9E8E7E;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--latte);
+  color: var(--espresso);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: rgba(28, 19, 13, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(183,152,88,0.15);
+}
+.nav-logo {
+  font-family: 'Jost', sans-serif;
+  font-size: 20px; font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--latte);
+  text-decoration: none;
+}
+.nav-logo span {
+  display: block;
+  font-size: 8px; font-weight: 300;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--gold); margin-top: 1px;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(243,233,215,0.65); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold-lt); }
+.nav-cta {
+  padding: 9px 22px;
+  background: var(--accent); color: var(--cream);
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  text-decoration: none; font-weight: 500;
+  transition: background 0.25s;
+}
+.nav-cta:hover { background: var(--accent-lt); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  position: relative; overflow: hidden;
+}
+.hero-left {
+  background: var(--dark);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 8rem 3.5rem 5rem;
+  position: relative; overflow: hidden;
+}
+
+/* large decorative circle */
+.hero-circle {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(183,152,88,0.12);
+  pointer-events: none;
+}
+.hc1 { width: 500px; height: 500px; top: -80px; left: -80px; }
+.hc2 { width: 320px; height: 320px; top: 20px; left: 20px; border-color: rgba(183,152,88,0.07); }
+
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.8rem;
+  opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 6vw, 88px);
+  font-weight: 300; line-height: 0.93;
+  color: var(--cream);
+  opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+}
+.hero-title em { font-style: italic; color: var(--gold-lt); }
+.hero-title .accent-word {
+  color: var(--accent-lt);
+  font-style: normal;
+}
+.hero-sub {
+  margin-top: 1.8rem;
+  font-size: 14px; line-height: 1.85; color: rgba(243,233,215,0.5);
+  max-width: 380px;
+  opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+}
+.hero-cta {
+  margin-top: 2.5rem; display: flex; gap: 1.2rem; align-items: center;
+  opacity: 0; animation: fadeUp 0.7s 1s forwards;
+}
+.btn-accent {
+  padding: 13px 30px;
+  background: var(--accent); color: var(--cream);
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; font-weight: 500;
+  transition: all 0.3s;
+}
+.btn-accent:hover { background: var(--accent-lt); }
+.btn-ghost-light {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(243,233,215,0.5); text-decoration: none;
+  border-bottom: 1px solid rgba(243,233,215,0.2); padding-bottom: 2px;
+  transition: all 0.3s;
+}
+.btn-ghost-light:hover { color: var(--cream); border-color: var(--cream); }
+
+.hero-right {
+  background: var(--espresso);
+  position: relative; overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  padding: 3rem;
+}
+/* large bean kanji watermark */
+.hero-kanji {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 320px; font-weight: 300;
+  color: rgba(183,152,88,0.05);
+  user-select: none; line-height: 1;
+}
+.hero-tag {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.hero-tag-line {
+  display: flex; align-items: center; gap: 12px;
+}
+.htl-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.htl-text {
+  font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(243,233,215,0.4);
+}
+
+/* scroll indicator */
+.hero-scroll {
+  position: absolute; bottom: 2rem; right: 3.5rem; z-index: 10;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: fadeIn 1s 1.6s forwards;
+}
+.hero-scroll span {
+  font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(243,233,215,0.3); writing-mode: vertical-rl;
+}
+.scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scrollPulse {
+  0%,100% { opacity: 0.5; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(0.75); }
+}
+
+/* ─── MARQUEE ─── */
+.strip {
+  background: var(--accent);
+  padding: 0.9rem 0; overflow: hidden;
+}
+.strip-track {
+  display: flex; gap: 3.5rem;
+  white-space: nowrap;
+  animation: marquee 22s linear infinite;
+}
+.strip-track span {
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(253,250,245,0.85); flex-shrink: 0;
+}
+.strip-track .dot { color: rgba(253,250,245,0.4); }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ─── STORY ─── */
+.story { padding: 9rem 3.5rem; background: var(--cream); position: relative; }
+.story::after {
+  content: '';
+  position: absolute; bottom: 0; left: 3.5rem; right: 3.5rem;
+  height: 1px; background: linear-gradient(to right, transparent, var(--cappuccino), transparent);
+}
+
+.story-intro {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 6rem;
+  margin-bottom: 7rem; align-items: start;
+}
+.story-intro-left {}
+.s-label {
+  font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.5rem; display: block;
+}
+.story-big-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 5vw, 68px); font-weight: 300; line-height: 1.0;
+}
+.story-big-title em { font-style: italic; color: var(--mocha); }
+
+.story-intro-right { padding-top: 1rem; }
+.story-pull {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 300; font-style: italic;
+  line-height: 1.5; color: var(--mocha);
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem; margin-bottom: 2rem;
+}
+.story-body {
+  font-size: 15px; line-height: 1.9; color: var(--mist);
+}
+
+/* chapters */
+.story-chapters {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--cappuccino);
+}
+.s-chapter {
+  background: var(--cream);
+  padding: 2.5rem 2rem;
+  position: relative; overflow: hidden;
+  transition: background 0.35s;
+}
+.s-chapter:hover { background: var(--espresso); }
+.s-chapter:hover .sc-num,
+.s-chapter:hover .sc-title,
+.s-chapter:hover .sc-body { color: var(--cream); }
+.s-chapter:hover .sc-num { color: var(--gold-lt); }
+.s-chapter:hover .sc-accent { border-color: var(--accent-lt); color: var(--accent-lt); }
+
+.sc-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px; font-weight: 300; line-height: 1;
+  color: var(--cappuccino); margin-bottom: 1.5rem;
+  transition: color 0.35s;
+}
+.sc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 21px; margin-bottom: 1rem;
+  transition: color 0.35s;
+}
+.sc-body {
+  font-size: 13px; line-height: 1.8; color: var(--mist);
+  transition: color 0.35s;
+}
+.sc-accent {
+  display: inline-block; margin-top: 1.5rem;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px; transition: all 0.35s;
+}
+
+/* ─── QUOTE BREAK ─── */
+.quote-break {
+  padding: 9rem 3.5rem;
+  background: var(--mocha);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+}
+.qb-left {}
+.qb-label {
+  font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem; display: block;
+}
+.qb-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 4vw, 52px); font-weight: 300;
+  color: var(--cream); line-height: 1.2;
+}
+.qb-quote em { font-style: italic; color: var(--gold-lt); }
+.qb-attr {
+  margin-top: 2rem; font-size: 11px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: rgba(243,233,215,0.35);
+}
+
+.qb-right {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+}
+.qb-stat {
+  padding: 2rem 1.5rem;
+  border: 1px solid rgba(183,152,88,0.25);
+}
+.qb-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 300; line-height: 1;
+  color: var(--gold-lt); margin-bottom: 0.5rem;
+}
+.qb-stat-label {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(243,233,215,0.45);
+}
+
+/* ─── PRODUCTS ─── */
+.products { padding: 9rem 3.5rem; background: var(--latte); }
+.section-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 4rem;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 56px); font-weight: 300; line-height: 1.05;
+}
+.section-title em { font-style: italic; color: var(--accent); }
+.section-sub { font-size: 13px; color: var(--mist); max-width: 200px; text-align: right; line-height: 1.7; }
+
+/* TABS */
+.prod-tabs { display: flex; gap: 0; margin-bottom: 3rem; border-bottom: 1px solid var(--cappuccino); }
+.ptab {
+  padding: 0.75rem 1.5rem;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  cursor: pointer; border: none; background: none;
+  color: var(--mist); font-family: 'Jost', sans-serif;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px; transition: all 0.25s;
+}
+.ptab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.ptab:hover { color: var(--espresso); }
+
+.prod-panel { display: none; }
+.prod-panel.active { display: block; }
+
+.prod-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.prod-card {
+  background: var(--cream);
+  border: 1px solid var(--cappuccino);
+  position: relative; overflow: hidden;
+  transition: all 0.3s;
+  cursor: default;
+}
+.prod-card:hover { border-color: var(--mocha); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(59,42,34,0.12); }
+
+.prod-card-top {
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid var(--cappuccino);
+  position: relative;
+}
+.prod-type-badge {
+  font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase;
+  padding: 4px 10px;
+  background: var(--espresso); color: var(--gold-lt);
+  display: inline-block; margin-bottom: 1rem;
+}
+.prod-blend-badge {
+  background: var(--accent); color: var(--cream);
+}
+.prod-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 21px; font-weight: 400; line-height: 1.15;
+  margin-bottom: 0.4rem;
+}
+.prod-origin {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--caramel); margin-bottom: 0;
+}
+.prod-card-body { padding: 1.5rem 2rem; }
+.prod-row {
+  display: flex; gap: 1.5rem;
+  font-size: 12px; padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(176,137,104,0.15);
+}
+.prod-row:last-child { border-bottom: none; }
+.pr-label { color: var(--mist); width: 90px; flex-shrink: 0; }
+.pr-val { color: var(--espresso); font-weight: 400; }
+.prod-notes {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-top: 1.2rem;
+}
+.pn-tag {
+  font-size: 10px; padding: 3px 9px;
+  border: 1px solid var(--cappuccino); color: var(--mocha);
+}
+
+/* ─── BREW GUIDE ─── */
+.brew { padding: 9rem 3.5rem; background: var(--espresso); }
+.brew-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.brew-left {}
+.brew-label {
+  font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.5rem; display: block;
+}
+.brew-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 52px); font-weight: 300; line-height: 1.1;
+  color: var(--cream); margin-bottom: 1.5rem;
+}
+.brew-body { font-size: 14px; line-height: 1.9; color: rgba(243,233,215,0.45); }
+
+.brew-right { display: flex; flex-direction: column; gap: 1px; background: rgba(243,233,215,0.08); }
+.brew-item {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 1.5rem; align-items: start;
+  padding: 1.8rem 2rem;
+  background: var(--espresso);
+  border-left: 3px solid transparent;
+  transition: all 0.25s;
+  cursor: default;
+}
+.brew-item:hover { background: rgba(243,233,215,0.04); border-left-color: var(--accent); }
+.brew-icon {
+  width: 40px; height: 40px;
+  border: 1px solid rgba(183,152,88,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.brew-item-text {}
+.bit-name {
+  font-size: 13px; font-weight: 500; letter-spacing: 0.05em;
+  color: var(--cream); margin-bottom: 4px;
+}
+.bit-roast {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 6px;
+}
+.bit-methods {
+  font-size: 12px; color: rgba(243,233,215,0.4); line-height: 1.6;
+}
+
+/* ─── VALUES ─── */
+.values { padding: 9rem 3.5rem; background: var(--cream); }
+.values-grid {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  gap: 6rem; align-items: center;
+}
+.val-left {}
+.val-label {
+  font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.5rem; display: block;
+}
+.val-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 54px); font-weight: 300; line-height: 1.1;
+  margin-bottom: 2.5rem;
+}
+.val-title em { font-style: italic; color: var(--mocha); }
+
+.val-items { display: flex; flex-direction: column; }
+.val-item {
+  display: grid; grid-template-columns: 32px 1fr;
+  gap: 1.2rem; align-items: start;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(176,137,104,0.2);
+  transition: padding-left 0.3s;
+}
+.val-item:hover { padding-left: 0.5rem; }
+.vi-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; color: var(--accent); padding-top: 2px;
+}
+.vi-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.vi-desc { font-size: 13px; line-height: 1.75; color: var(--mist); }
+
+.val-right {
+  background: var(--dark); position: relative;
+  aspect-ratio: 3/4; display: flex; align-items: flex-end;
+  padding: 2.5rem;
+  overflow: hidden;
+}
+.val-bg-kanji {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 240px; font-weight: 300;
+  color: rgba(183,152,88,0.06); user-select: none;
+  transform: rotate(-15deg);
+}
+.val-card {
+  position: relative; z-index: 2;
+  border-left: 2px solid var(--accent); padding-left: 1.5rem;
+}
+.vc-small {
+  font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.75rem;
+}
+.vc-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-style: italic; font-weight: 300;
+  color: var(--cream); line-height: 1.4;
+}
+
+/* ─── CTA ─── */
+.cta { padding: 10rem 3.5rem; background: var(--dark); text-align: center; position: relative; overflow: hidden; }
+.cta-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 60%, rgba(161,58,30,0.12) 0%, transparent 65%);
+}
+.cta-label {
+  font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem; position: relative;
+}
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 6vw, 82px); font-weight: 300;
+  color: var(--cream); line-height: 1.0; margin-bottom: 1.5rem;
+  position: relative;
+}
+.cta-title em { font-style: italic; color: var(--gold-lt); }
+.cta-body {
+  font-size: 14px; line-height: 1.85;
+  color: rgba(243,233,215,0.4);
+  max-width: 420px; margin: 0 auto 3rem;
+  position: relative;
+}
+.cta-btns { display: flex; justify-content: center; gap: 1.2rem; position: relative; }
+.btn-lg-accent {
+  padding: 16px 42px;
+  background: var(--accent); color: var(--cream);
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; font-weight: 500; font-family: 'Jost', sans-serif;
+  transition: background 0.25s;
+}
+.btn-lg-accent:hover { background: var(--accent-lt); }
+.btn-lg-outline {
+  padding: 16px 42px;
+  border: 1px solid rgba(243,233,215,0.2);
+  color: rgba(243,233,215,0.6);
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; font-family: 'Jost', sans-serif;
+  transition: all 0.25s;
+}
+.btn-lg-outline:hover { border-color: var(--gold); color: var(--gold-lt); }
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 2.5rem 3.5rem;
+  background: var(--dark);
+  border-top: 1px solid rgba(183,152,88,0.1);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-brand { }
+.footer-logo-text {
+  font-family: 'Jost', sans-serif;
+  font-size: 16px; font-weight: 600; letter-spacing: 0.12em;
+  color: var(--latte); display: block;
+}
+.footer-tagline {
+  font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-top: 2px;
+}
+.footer-links { display: flex; gap: 1.8rem; }
+.footer-links a {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(243,233,215,0.3); text-decoration: none; transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 10px; color: rgba(243,233,215,0.2); letter-spacing: 0.05em; }
+
+/* ─── REVEAL ─── */
+.reveal { opacity: 0; transform: translateY(32px);
+  transition: opacity 0.75s cubic-bezier(0.4,0,0.2,1), transform 0.75s cubic-bezier(0.4,0,0.2,1); }
+.reveal.visible { opacity: 1; transform: none; }
+.rd1 { transition-delay: 0.1s; }
+.rd2 { transition-delay: 0.2s; }
+.rd3 { transition-delay: 0.3s; }
+.rd4 { transition-delay: 0.4s; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links li:not(:last-child) { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .hero-left { padding: 7rem 1.5rem 4rem; }
+  .story-intro { grid-template-columns: 1fr; gap: 2.5rem; }
+  .story-chapters { grid-template-columns: 1fr 1fr; }
+  .quote-break { grid-template-columns: 1fr; }
+  .qb-right { grid-template-columns: repeat(4,1fr); }
+  .brew-grid { grid-template-columns: 1fr; }
+  .values-grid { grid-template-columns: 1fr; }
+  .val-right { display: none; }
+  footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+  .footer-links { justify-content: center; flex-wrap: wrap; }
+  .products, .story, .values, .brew, .cta, .quote-break { padding: 5rem 1.5rem; }
+}
+@media (max-width: 600px) {
+  .story-chapters { grid-template-columns: 1fr; }
+  .qb-right { grid-template-columns: 1fr 1fr; }
+  .prod-grid { grid-template-columns: 1fr; }
+  .prod-tabs { flex-wrap: wrap; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .section-sub { text-align: left; }
+  .cta-btns { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">mamemono<span>from mame to mug</span></a>
+  <ul class="nav-links">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#brew">Brew Guide</a></li>
+    <li><a href="#values">About</a></li>
+    <li><a href="#products" class="nav-cta">Order Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-circle hc1"></div>
+    <div class="hero-circle hc2"></div>
+    <p class="hero-eyebrow">Malaysia · Small Batch · On Demand Roasted</p>
+    <h1 class="hero-title">
+      The <em>bean</em><br>
+      thing you've<br>
+      been <span class="accent-word">craving.</span>
+    </h1>
+    <p class="hero-sub">
+      Mamemono — <em>bean thing</em> in Japanese. We roast fresh, on demand,
+      bringing specialty coffee to everyone — cozy, honest, and made with love from Malaysia.
+    </p>
+    <div class="hero-cta">
+      <a href="#products" class="btn-accent">Shop Our Beans</a>
+      <a href="#story" class="btn-ghost-light">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-kanji">豆</div>
+    <div class="hero-tag">
+      <div class="hero-tag-line"><div class="htl-dot"></div><span class="htl-text">Ethiopia · Washed Adado</span></div>
+      <div class="hero-tag-line"><div class="htl-dot"></div><span class="htl-text">Brazil · Natural Tie Fogo</span></div>
+      <div class="hero-tag-line"><div class="htl-dot"></div><span class="htl-text">Colombia · Supremo Huila</span></div>
+      <div class="hero-tag-line"><div class="htl-dot"></div><span class="htl-text">Guatemala · Washed SHB</span></div>
+      <div class="hero-tag-line"><div class="htl-dot"></div><span class="htl-text">Indonesia · Mandheling G1</span></div>
+    </div>
+    <div class="hero-scroll">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="strip">
+  <div class="strip-track">
+    <span>Small Batch Roasted</span><span class="dot">·</span>
+    <span>Ethiopia · Brazil · Colombia · Guatemala · Indonesia</span><span class="dot">·</span>
+    <span>On Demand Freshness</span><span class="dot">·</span>
+    <span>From Mame to Mug</span><span class="dot">·</span>
+    <span>Made in Malaysia</span><span class="dot">·</span>
+    <span>Whole Bean · Grinded · Drip Coffee</span><span class="dot">·</span>
+    <span>Small Batch Roasted</span><span class="dot">·</span>
+    <span>Ethiopia · Brazil · Colombia · Guatemala · Indonesia</span><span class="dot">·</span>
+    <span>On Demand Freshness</span><span class="dot">·</span>
+    <span>From Mame to Mug</span><span class="dot">·</span>
+    <span>Made in Malaysia</span><span class="dot">·</span>
+    <span>Whole Bean · Grinded · Drip Coffee</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <div class="story-intro">
+    <div class="story-intro-left reveal">
+      <span class="s-label">— Our Story</span>
+      <h2 class="story-big-title">
+        A hobby.<br>A calling.<br><em>A cup for you.</em>
+      </h2>
+    </div>
+    <div class="story-intro-right reveal rd1">
+      <p class="story-pull">
+        "It started with one cup. Then another. Then an embarrassing number of failed roasts."
+      </p>
+      <p class="story-body">
+        Mamemono — <strong>bean thing</strong> in Japanese — grew from a quiet obsession with specialty coffee and the warm, cozy world it creates. Born in Malaysia, shaped by Japanese café culture, and fuelled by a simple belief: great coffee should be accessible to everyone, not just those who can afford the premium tag.<br><br>
+        We source from the finest origins — Ethiopia, Brazil, Colombia, Guatemala, and Indonesia — and roast every single bag fresh, on demand. No warehouses. No stale shelves. Just the bean, the roast, and you.
+      </p>
+    </div>
+  </div>
+
+  <div class="story-chapters">
+    <div class="s-chapter reveal">
+      <p class="sc-num">01</p>
+      <h3 class="sc-title">One Cup Changed Everything</h3>
+      <p class="sc-body">Weekends spent roasting. Tasting. Obsessing. Friends started asking for bags. Then strangers did too. Something was brewing.</p>
+      <span class="sc-accent">The beginning</span>
+    </div>
+    <div class="s-chapter reveal rd1">
+      <p class="sc-num">02</p>
+      <h3 class="sc-title">The Name & The Vibe</h3>
+      <p class="sc-body">Mamemono — bean thing. A nod to Japanese cozy culture. A promise that coffee is a feeling, not just a drink. Warm. Simple. Honest.</p>
+      <span class="sc-accent">The philosophy</span>
+    </div>
+    <div class="s-chapter reveal rd2">
+      <p class="sc-num">03</p>
+      <h3 class="sc-title">Fresh Is the Only Way</h3>
+      <p class="sc-body">Every bag roasted after your order. No sitting on shelves. No stale product. Just coffee at its absolute peak — every single time.</p>
+      <span class="sc-accent">The promise</span>
+    </div>
+    <div class="s-chapter reveal rd3">
+      <p class="sc-num">04</p>
+      <h3 class="sc-title">Coffee for Everyone</h3>
+      <p class="sc-body">World-class origins at prices that don't make you flinch. Specialty coffee shouldn't come with a side of gatekeeping. We opened the door.</p>
+      <span class="sc-accent">Today</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BREAK -->
+<section class="quote-break">
+  <div class="qb-left reveal">
+    <span class="qb-label">— The Mamemono Way</span>
+    <blockquote class="qb-quote">
+      "Good coffee shouldn't be a luxury.<br>
+      It should be your <em>everyday</em> —<br>
+      warm, honest, and freshly roasted."
+    </blockquote>
+    <p class="qb-attr">— Mamemono, Malaysia</p>
+  </div>
+  <div class="qb-right reveal rd1">
+    <div class="qb-stat"><p class="qb-stat-num">5</p><p class="qb-stat-label">Origins</p></div>
+    <div class="qb-stat"><p class="qb-stat-num">7</p><p class="qb-stat-label">Products</p></div>
+    <div class="qb-stat"><p class="qb-stat-num">100%</p><p class="qb-stat-label">On Demand</p></div>
+    <div class="qb-stat"><p class="qb-stat-num">3</p><p class="qb-stat-label">Formats</p></div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="section-header reveal">
+    <h2 class="section-title">Our<br><em>Coffees.</em></h2>
+    <p class="section-sub">50g · 100g · 250g<br>Whole Bean · Grinded · Drip Coffee</p>
+  </div>
+
+  <div class="prod-tabs reveal">
+    <button class="ptab active" onclick="showTab('all',this)">All</button>
+    <button class="ptab" onclick="showTab('single',this)">Single Origin</button>
+    <button class="ptab" onclick="showTab('blend',this)">House Blend</button>
+  </div>
+
+  <!-- ALL / SINGLE ORIGIN -->
+  <div class="prod-panel active" id="tab-all">
+    <div class="prod-grid">
+
+      <!-- Ethiopia -->
+      <div class="prod-card reveal" data-type="single">
+        <div class="prod-card-top">
+          <span class="prod-type-badge">Single Origin</span>
+          <h3 class="prod-name">Ethiopia Washed Adado</h3>
+          <p class="prod-origin">Ethiopia · Heirloom · Fully Washed</p>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-row"><span class="pr-label">Altitude</span><span class="pr-val">1,945–2,000 masl</span></div>
+          <div class="prod-row"><span class="pr-label">Roast</span><span class="pr-val">Medium-Dark</span></div>
+          <div class="prod-row"><span class="pr-label">Format</span><span class="pr-val">Whole Bean · Grinded · Drip</span></div>
+          <div class="prod-row"><span class="pr-label">Weight</span><span class="pr-val">50g · 100g · 250g</span></div>
+          <div class="prod-notes">
+            <span class="pn-tag">black tea</span>
+            <span class="pn-tag">citrus</span>
+            <span class="pn-tag">smooth cocoa</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brazil -->
+      <div class="prod-card reveal rd1" data-type="single">
+        <div class="prod-card-top">
+          <span class="prod-type-badge">Single Origin</span>
+          <h3 class="prod-name">Brazil Natural Tie Fogo</h3>
+          <p class="prod-origin">Brazil · Red Catuai · Natural</p>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-row"><span class="pr-label">Altitude</span><span class="pr-val">900–950 masl</span></div>
+          <div class="prod-row"><span class="pr-label">Roast</span><span class="pr-val">Medium-Dark</span></div>
+          <div class="prod-row"><span class="pr-label">Format</span><span class="pr-val">Whole Bean · Grinded · Drip</span></div>
+          <div class="prod-row"><span class="pr-label">Weight</span><span class="pr-val">50g · 100g · 250g</span></div>
+          <div class="prod-notes">
+            <span class="pn-tag">smooth cocoa</span>
+            <span class="pn-tag">nutty depth</span>
+            <span class="pn-tag">hint of spice</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colombia -->
+      <div class="prod-card reveal rd2" data-type="single">
+        <div class="prod-card-top">
+          <span class="prod-type-badge">Single Origin</span>
+          <h3 class="prod-name">Colombia Supremo Huila</h3>
+          <p class="prod-origin">Colombia · Colombia & Castillo · Fully Washed</p>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-row"><span class="pr-label">Altitude</span><span class="pr-val">1,500–1,700 masl</span></div>
+          <div class="prod-row"><span class="pr-label">Roast</span><span class="pr-val">Medium-Dark</span></div>
+          <div class="prod-row"><span class="pr-label">Format</span><span class="pr-val">Whole Bean · Grinded · Drip</span></div>
+          <div class="prod-row"><span class="pr-label">Weight</span><span class="pr-val">50g · 100g · 250g</span></div>
+          <div class="prod-notes">
+            <span class="pn-tag">dark chocolate</span>
+            <span class="pn-tag">ripe plum</span>
+            <span class="pn-tag">toasted caramel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guatemala -->
+      <div class="prod-card reveal rd3" data-type="single">
+        <div class="prod-card-top">
+          <span class="prod-type-badge">Single Origin</span>
+          <h3 class="prod-name">Guatemala Washed SHB</h3>
+          <p class="prod-origin">Guatemala · Arabica · Fully Washed · Huehuetenango</p>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-row"><span class="pr-label">Altitude</span><span class="pr-val">1,400–2,000 masl</span></div>
+          <div class="prod-row"><span class="pr-label">Roast</span><span class="pr-val">Medium-Dark</span></div>
+          <div class="prod-row"><span class="pr-label">Format</span><span class="pr-val">Whole Bean · Grinded · Drip</span></div>
+          <div class="prod-row"><span class="pr-label">Weight</span><span class="pr-val">50g · 100g · 250g</span></div>
+          <div class="prod-notes">
+            <span class="pn-tag">bright citrus</span>
+            <span class="pn-tag">roasted nuts</span>
+            <span class="pn-tag">dark chocolate</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indonesia -->
+      <div class="prod-card reveal" data-type="single">
+        <div class="prod-card-top">
+          <span class="prod-type-badge">Single Origin</span>
+          <h3 class="prod-name">Indonesia Mandheling G1</h3>
+          <p class="prod-origin">Indonesia · Typica & Catimor · Wet Hulled</p>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-row"><span class="pr-label">Altitude</span><span class="pr-val">1,200–1,500 masl</span></div>
+          <div class="prod-row"><span class="pr-label">Roast</span><span class="pr-val">Medium-Dark</span></div>
+          <div class="prod-row"><span class="pr-label">Format</span><span class="pr-val">Whole Bean · Grinded · Drip</span></div>
+          <div class="prod-row"><span class="pr-label">Weight</span><span class="pr-val">50g · 100g · 250g</span></div>
+          <div class="prod-notes">
+            <span class="pn-tag">dark chocolate</span>
+            <span class="pn-tag">tobacco</span>
+            <span class="pn-tag">dried fig</span>
+            <span class="pn-tag">roasted nuts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ember Blend -->
+      <div class="prod-card reveal rd1" data-type="blend">
+        <div class="prod-card-top">
+          <span class="prod-type-badge prod-blend-badge">House Blend</span>
+          <h3 class="prod-name">Mamemono Ember</h3>
+          <p class="prod-origin">Colombia · Indonesia</p>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-row"><span class="pr-label">Best For</span><span class="pr-val">Espresso · Long Black · Americano</span></div>
+          <div class="prod-row"><span class="pr-label">Format</span><span class="pr-val">Whole Bean · Grinded · Drip</span></div>
+          <div class="prod-row"><span class="pr-label">Weight</span><span class="pr-val">50g · 100g · 250g</span></div>
+          <div class="prod-notes">
+            <span class="pn-tag">dark chocolate</span>
+            <span class="pn-tag">burnt caramel</span>
+            <span class="pn-tag">dried cherry</span>
+            <span class="pn-tag">earthy finish</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terra Blend -->
+      <div class="prod-card reveal rd2" data-type="blend">
+        <div class="prod-card-top">
+          <span class="prod-type-badge prod-blend-badge">House Blend</span>
+          <h3 class="prod-name">Mamemono Terra</h3>
+          <p class="prod-origin">Colombia · Brazil · Indonesia</p>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-row"><span class="pr-label">Best For</span><span class="pr-val">Espresso · Latte · Long Black</span></div>
+          <div class="prod-row"><span class="pr-label">Format</span><span class="pr-val">Whole Bean · Grinded · Drip</span></div>
+          <div class="prod-row"><span class="pr-label">Weight</span><span class="pr-val">50g · 100g · 250g</span></div>
+          <div class="prod-notes">
+            <span class="pn-tag">chocolate</span>
+            <span class="pn-tag">roasted almond</span>
+            <span class="pn-tag">red apple</span>
+            <span class="pn-tag">earthy finish</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SINGLE ORIGIN panel -->
+  <div class="prod-panel" id="tab-single">
+    <div class="prod-grid" id="single-grid"></div>
+  </div>
+  <!-- BLEND panel -->
+  <div class="prod-panel" id="tab-blend">
+    <div class="prod-grid" id="blend-grid"></div>
+  </div>
+</section>
+
+<!-- BREW GUIDE -->
+<section class="brew" id="brew">
+  <div class="brew-grid">
+    <div class="brew-left reveal">
+      <span class="brew-label">— Coffee Roast & Brew Guide</span>
+      <h2 class="brew-title">Grind size matters.<br>Here's how to brew it right.</h2>
+      <p class="brew-body">Adjust grind size according to your brewing method for best flavour extraction. Our beans are roasted to medium-dark — rich, chocolatey, and versatile across all methods.</p>
+    </div>
+    <div class="brew-right reveal rd1">
+      <div class="brew-item">
+        <div class="brew-icon">☕</div>
+        <div class="brew-item-text">
+          <p class="bit-name">Pour Over (V60 / Kalita)</p>
+          <p class="bit-roast">Light to Medium Roast</p>
+          <p class="bit-methods">Best for single origins — highlights fruity, floral, and tea-like notes. Medium-fine grind.</p>
+        </div>
+      </div>
+      <div class="brew-item">
+        <div class="brew-icon">🫙</div>
+        <div class="brew-item-text">
+          <p class="bit-name">Aeropress / Chemex</p>
+          <p class="bit-roast">Light to Medium Roast</p>
+          <p class="bit-methods">Clean cup, bright acidity. Great for Ethiopia Washed Adado and Colombia Huila.</p>
+        </div>
+      </div>
+      <div class="brew-item">
+        <div class="brew-icon">🍵</div>
+        <div class="brew-item-text">
+          <p class="bit-name">Espresso / Moka Pot</p>
+          <p class="bit-roast">Medium-Dark Roast</p>
+          <p class="bit-methods">Richer body, chocolatey, mild bitterness. Perfect for Ember and Terra house blends.</p>
+        </div>
+      </div>
+      <div class="brew-item">
+        <div class="brew-icon">🫖</div>
+        <div class="brew-item-text">
+          <p class="bit-name">French Press / Drip Machine</p>
+          <p class="bit-roast">Medium-Dark Roast</p>
+          <p class="bit-methods">Full body, low acid. Works beautifully with Brazil Natural and Indonesia Mandheling.</p>
+        </div>
+      </div>
+      <div class="brew-item">
+        <div class="brew-icon">🧊</div>
+        <div class="brew-item-text">
+          <p class="bit-name">Cold Brew</p>
+          <p class="bit-roast">Light or Medium-Dark</p>
+          <p class="bit-methods">Tea-like profile (light roast) or stronger, bolder cold brew (medium-dark). Both work.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values" id="values">
+  <div class="values-grid">
+    <div class="val-left reveal">
+      <span class="val-label">— What We Stand For</span>
+      <h2 class="val-title">Coffee with<br><em>purpose</em> and<br>people in mind.</h2>
+      <div class="val-items">
+        <div class="val-item reveal">
+          <span class="vi-num">01</span>
+          <div><p class="vi-name">Small Batch, Always</p><p class="vi-desc">We roast only what's ordered. Never sitting, never stale. Just fresh coffee, every time.</p></div>
+        </div>
+        <div class="val-item reveal rd1">
+          <span class="vi-num">02</span>
+          <div><p class="vi-name">Affordably Specialty</p><p class="vi-desc">World-class beans at prices that don't make you think twice about ordering again.</p></div>
+        </div>
+        <div class="val-item reveal rd2">
+          <span class="vi-num">03</span>
+          <div><p class="vi-name">The Cozy Philosophy</p><p class="vi-desc">Coffee should feel like a warm hug. We bring Japanese warmth and Malaysian heart to every cup.</p></div>
+        </div>
+        <div class="val-item reveal rd3">
+          <span class="vi-num">04</span>
+          <div><p class="vi-name">Rooted in Honesty</p><p class="vi-desc">We're a small team with a real story and a genuine love of what we do. Nothing more, nothing less.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="val-right reveal rd2">
+      <div class="val-bg-kanji">豆</div>
+      <div class="val-card">
+        <p class="vc-small">Mamemono Means</p>
+        <p class="vc-body">"Bean thing" — a small<br>word for something we<br>take very seriously.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-bg"></div>
+  <p class="cta-label reveal">— Start Your Journey</p>
+  <h2 class="cta-title reveal">Your next favourite<br><em>cup</em> is waiting.</h2>
+  <p class="cta-body reveal">Pick your origin. We roast it fresh. It arrives at your door ready to become part of your morning ritual.</p>
+  <div class="cta-btns reveal">
+    <a href="#products" class="btn-lg-accent">Shop All Beans</a>
+    <a href="#story" class="btn-lg-outline">Read Our Story</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="footer-logo-text">mamemono</span>
+    <span class="footer-tagline">from mame to mug · Malaysia</span>
+  </div>
+  <div class="footer-links">
+    <a href="#products">Shop</a>
+    <a href="#story">Story</a>
+    <a href="#brew">Brew Guide</a>
+    <a href="#values">About</a>
+    <a href="#">Instagram</a>
+  </div>
+  <p class="footer-copy">© 2025 Mamemono · Roasted with love</p>
+</footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Tab system — clone cards into filtered panels
+function showTab(type, btn) {
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.prod-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+
+  if (type === 'all') {
+    document.getElementById('tab-all').classList.add('active');
+    return;
+  }
+
+  const target = document.getElementById('tab-' + type);
+  const grid = target.querySelector('.prod-grid') || target;
+  // clear
+  const existingGrid = type === 'single' ? document.getElementById('single-grid') : document.getElementById('blend-grid');
+  existingGrid.innerHTML = '';
+
+  // get source cards
+  document.querySelectorAll('#tab-all .prod-card[data-type="' + type + '"]').forEach(card => {
+    existingGrid.appendChild(card.cloneNode(true));
+  });
+
+  target.classList.add('active');
+}
+</script>
+</body>
+</html>
